@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="neon-heading-cyan">Receipts Archive</h2>
+<a class="btn" href="{{ url_for('dashboard') }}">⬅ Back to Dashboard</a>
+
+{% if sorted_dates %}
+  {% for d in sorted_dates %}
+    <div class="card">
+      <h3 class="neon-yellow">
+        {{ d.strftime('%A, %d %B %Y') }}
+      </h3>
+      <ul class="receipt-list">
+        {% for t in grouped[d] %}
+          <li class="receipt-item">
+            <div class="receipt-info">
+              <span class="receipt-name neon-blue">{{ t.name }}</span>
+              <span class="neon-purple">
+                {{ t.unit.building.name }} / House {{ t.unit.number }} •
+                {{ (t.receipt_created_at or t.created_at).strftime('%H:%M:%S') }} •
+                Paid: <span class="neon-green">{{ t.amount_paid }}</span> •
+                Balance: <span class="neon-red">{{ t.balance }}</span>
+              </span>
+            </div>
+            <a class="btn" href="{{ url_for('receipt', tid=t.id) }}" target="_blank">
+              🧾 View Receipt
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="neon-yellow">No receipts yet. Record payments to generate receipts.</p>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-cyan">Create Landlord Account</h2>
+  <form method="post" class="form-vertical">
+    <label class="neon-blue">First Name
+      <input name="first_name" required>
+    </label>
+    <label class="neon-purple">Last Name
+      <input name="last_name" required>
+    </label>
+    <label class="neon-pink">Email
+      <input type="email" name="email" required>
+    </label>
+    <label class="neon-aqua">Phone
+      <input name="phone">
+    </label>
+    <label class="neon-yellow">Password
+      <input type="password" name="password" required>
+    </label>
+    <button class="btn">Register</button>
+  </form>
+  <a class="btn" href="{{ url_for('login') }}">⬅ Back to Login</a>
+</div>
+{% endblock %}
+

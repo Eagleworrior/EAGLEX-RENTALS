@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-pink">New Building</h2>
+  <form method="post" class="form-vertical">
+    <label class="neon-blue">Building Name
+      <input name="name" required>
+    </label>
+    <button class="btn">Save Building</button>
+  </form>
+  <a class="btn" href="{{ url_for('dashboard') }}">⬅ Back</a>
+</div>
+{% endblock %}
+

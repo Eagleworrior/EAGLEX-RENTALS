@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-pink">
+    New Unit in <span class="neon-yellow">{{ building.name }}</span>
+  </h2>
+  <form method="post" class="form-vertical">
+    <label class="neon-blue">House Number
+      <input name="number" required>
+    </label>
+    <label class="neon-green">Rent Amount
+      <input type="number" step="0.01" name="rent_amount">
+    </label>
+    <button class="btn">Save Unit</button>
+  </form>
+  <a class="btn" href="{{ url_for('building_detail', bid=building.id) }}">⬅ Back</a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-cyan">Your Buildings</h2>
+  <a class="btn" href="{{ url_for('new_building') }}">➕ Add Building</a>
+
+  {% if buildings %}
+    <ul class="receipt-list">
+      {% for b in buildings %}
+        <li class="receipt-item">
+          <div class="receipt-info">
+            <span class="receipt-name neon-blue">{{ b.name }}</span>
+            <span class="neon-purple">Units: {{ b.units|length }}</span>
+          </div>
+          <a class="btn" href="{{ url_for('building_detail', bid=b.id) }}">Open</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="neon-yellow">No buildings yet. Add your first building.</p>
+  {% endif %}
+</div>
+{% endblock %}
+

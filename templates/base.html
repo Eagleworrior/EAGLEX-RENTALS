@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>EAGLEX RENTALS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/neon.css') }}">
+</head>
+<body class="theme-dark">
+  <header>
+    <div class="header-title">
+      <span class="logo-text">
+        <span class="neon-blue">E</span>
+        <span class="neon-purple">A</span>
+        <span class="neon-green">G</span>
+        <span class="neon-yellow">L</span>
+        <span class="neon-red">E</span>
+        <span class="neon-aqua">X</span>
+        <span class="neon-pink"> </span>
+        <span class="neon-purple">R</span>
+        <span class="neon-green">E</span>
+        <span class="neon-yellow">N</span>
+        <span class="neon-red">T</span>
+        <span class="neon-aqua">A</span>
+        <span class="neon-pink">L</span>
+        <span class="neon-violet">S</span>
+      </span>
+    </div>
+    <div class="header-actions">
+      {% if current_user.is_authenticated %}
+        <span class="neon-aqua">
+          Landlord:
+          <span class="neon-yellow">{{ current_user.full_name }}</span>
+        </span>
+        <a class="btn" href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+        <a class="btn" href="{{ url_for('receipts') }}">🧾 Receipts</a>
+        <a class="btn" href="{{ url_for('paid_tenants') }}">✅ Paid</a>
+        <a class="btn" href="{{ url_for('unpaid_tenants') }}">⚠ Unpaid</a>
+        <a class="btn" href="{{ url_for('logout') }}">🚪 Logout</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-area">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
+

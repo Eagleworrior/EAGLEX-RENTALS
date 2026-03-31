@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Receipt - {{ tenant.name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/neon.css') }}">
+  <style>
+    .glow-anim { animation: glowPulse 2s infinite alternate; }
+    @keyframes glowPulse { from { text-shadow:0 0 10px currentColor; } to { text-shadow:0 0 25px currentColor; } }
+    .neon-border { border:4px solid var(--neon-purple); animation:borderGlow 2s infinite alternate; }
+    @keyframes borderGlow { from { box-shadow:0 0 10px var(--neon-purple);} to { box-shadow:0 0 30px var(--neon-purple);} }
+    .butterfly-watermark { position:absolute; top:20px; right:20px; width:120px; height:120px; opacity:0.25;
+      background:url('{{ url_for("static", filename="img/butterfly.png") }}') no-repeat center; background-size:contain;
+      animation:flutter 4s infinite ease-in-out alternate; }
+    @keyframes flutter { from { transform:rotate(-5deg) scale(1);} to { transform:rotate(5deg) scale(1.1);} }
+    .qr-box { margin-top:20px; text-align:center; }
+  </style>
+</head>
+<body class="theme-dark">
+  <div class="receipt-border neon-border">
+    <div class="butterfly-watermark"></div>
+
+    <!-- EAGLEX RENTALS at the top -->
+    <h1 class="receipt-heading glow-anim">
+      <span class="neon-blue">E</span><span class="neon-purple">A</span><span class="neon-green">G</span>
+      <span class="neon-yellow">L</span><span class="neon-red">E</span><span class="neon-aqua">X</span>
+      <span class="neon-pink"> </span><span class="neon-purple">R</span><span class="neon-green">E</span>
+      <span class="neon-yellow">N</span><span class="neon-red">T</span><span class="neon-aqua">A</span>
+      <span class="neon-pink">L</span><span class="neon-violet">S</span>
+    </h1>
+    <h2 class="neon-aqua glow-anim" style="text-align:center;">OFFICIAL RENT RECEIPT</h2>
+
+    <!-- Receipt number -->
+    <p class="receipt-text line1" style="text-align:center;">
+      <span class="label">Receipt No:</span>
+      <span class="neon-yellow">RCP-{{ '%04d' % tenant.id }}</span>
+    </p>
+
+    <hr>
+
+    <!-- Tenant + Unit -->
+    <p class="receipt-text line2"><span class="label">Building:</span> {{ tenant.unit.building.name }}</p>
+    <p class="receipt-text line3"><span class="label">House:</span> {{ tenant.unit.number }}</p>
+
+    <hr>
+
+    <!-- Tenant details -->
+    <p class="receipt-text line4"><span class="label">Tenant Name:</span> {{ tenant.name }}</p>
+    <p class="receipt-text line5"><span class="label">Phone:</span> {{ tenant.phone }}</p>
+    <p class="receipt-text line6"><span class="label">ID Number:</span> {{ tenant.id_number }}</p>
+    <p class="receipt-text line7"><span class="label">Email:</span> {{ tenant.email }}</p>
+
+    <hr>
+
+    <!-- Payment -->
+    <p class="receipt-text line8"><span class="label">Total Rent:</span> {{ tenant.rent_amount }}</p>
+    <p class="receipt-text line9"><span class="label">Amount Paid:</span> {{ tenant.amount_paid }}</p>
+    <p class="receipt-text line10"><span class="label">Balance:</span> {{ tenant.balance }}</p>
+
+    <hr>
+
+    <!-- Exact date + time -->
+    <p class="receipt-text line11" style="text-align:center;">
+      <span class="label">Created On:</span>
+      {{ date.strftime('%A, %d %B %Y — %I:%M:%S %p') }}
+    </p>
+
+    {% if tenant.paid %}
+      <p class="receipt-status paid glow-anim">FULLY PAID</p>
+    {% else %}
+      <p class="receipt-status due glow-anim">BALANCE DUE</p>
+    {% endif %}
+
+    <div class="stamp"></div>
+
+    <!-- Signature -->
+    <div class="signature-area" style="text-align:center;">
+      <p class="signature-label">Authorized Signature</p>
+      <div class="signature-line"></div>
+      <p class="neon-aqua">{% if landlord %}{{ landlord.full_name }}{% else %}__________________{% endif %}</p>
+    </div>
+
+    <!-- QR Code -->
+    <div class="qr-box">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ request.url }}" alt="QR Code">
+      <p class="neon-green">Scan to verify receipt</p>
+    </div>
+
+    <button class="btn neon-btn no-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+  </div>
+</body>
+</html>
+

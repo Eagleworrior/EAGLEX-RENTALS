@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-cyan">
+    <span class="neon-yellow">{{ unit.building.name }}</span> —
+    <span class="neon-green">House {{ unit.number }}</span>
+  </h2>
+  <p class="neon-aqua">Rent: <span class="neon-yellow">{{ unit.rent_amount }}</span></p>
+
+  {% if unit.tenant %}
+    <div class="card">
+      <h3 class="neon-heading-pink">Tenant Details</h3>
+
+      <p class="neon-blue">
+        <span class="neon-purple">Name:</span>
+        <span class="neon-yellow">{{ unit.tenant.name }}</span>
+      </p>
+
+      <p class="neon-green">
+        <span class="neon-red">Phone:</span>
+        <span class="neon-aqua">{{ unit.tenant.phone }}</span>
+      </p>
+
+      <p class="neon-purple">
+        <span class="neon-yellow">ID Number:</span>
+        <span class="neon-pink">{{ unit.tenant.id_number }}</span>
+      </p>
+
+      <p class="neon-aqua">
+        <span class="neon-blue">Email:</span>
+        <span class="neon-green">{{ unit.tenant.email }}</span>
+      </p>
+
+      <p class="neon-red">
+        <span class="neon-purple">Amount Paid:</span>
+        <span class="neon-yellow">{{ unit.tenant.amount_paid }}</span>
+      </p>
+
+      <p class="neon-yellow">
+        <span class="neon-blue">Balance:</span>
+        <span class="neon-red">{{ unit.tenant.balance }}</span>
+      </p>
+
+      <form method="post" action="{{ url_for('record_payment', tid=unit.tenant.id) }}" class="form-vertical">
+        <label class="neon-aqua">Add Payment
+          <input type="number" step="0.01" name="amount" required>
+        </label>
+        <button class="btn">Record Payment</button>
+      </form>
+
+      <a class="btn" href="{{ url_for('receipt', tid=unit.tenant.id) }}" target="_blank">
+        🧾 View Receipt
+      </a>
+    </div>
+  {% else %}
+    <p class="neon-pink">No tenant assigned yet.</p>
+    <a class="btn" href="{{ url_for('new_tenant', uid=unit.id) }}">➕ Add Tenant</a>
+  {% endif %}
+
+  <a class="btn" href="{{ url_for('building_detail', bid=unit.building.id) }}">⬅ Back</a>
+</div>
+{% endblock %}
+

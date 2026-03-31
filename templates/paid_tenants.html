@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-cyan">Paid Tenants</h2>
+  <a class="btn" href="{{ url_for('dashboard') }}">⬅ Back</a>
+
+  {% if tenants %}
+    <ul class="receipt-list">
+      {% for t in tenants %}
+        <li class="receipt-item">
+          <div class="receipt-info">
+            <span class="receipt-name neon-green">{{ t.name }}</span>
+            <span class="neon-blue">
+              {{ t.unit.building.name }} / House {{ t.unit.number }} •
+              Paid: <span class="neon-green">{{ t.amount_paid }}</span>
+            </span>
+          </div>
+          <a class="btn" href="{{ url_for('receipt', tid=t.id) }}" target="_blank">🧾 Receipt</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="neon-yellow">No paid tenants yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
