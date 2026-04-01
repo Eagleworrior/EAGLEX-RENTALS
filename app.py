@@ -54,7 +54,7 @@ class Tenant(db.Model):
     email = db.Column(db.String(120))
     amount_paid = db.Column(db.Float, default=0.0)
     paid = db.Column(db.Boolean, default=False)
-    receipt_created_at = db.Column(db.DateTime)
+    receipt_created_at = db.Column(db.DateTime, default=datetime.utcnow)
     unit_id = db.Column(db.Integer, db.ForeignKey('unit.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

@@ -85,6 +85,13 @@
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ request.url }}" alt="QR Code">
       <p class="neon-green">Scan to verify receipt</p>
     </div>
+<!-- Back Button -->
+<a href="{{ url_for('unit_detail', uid=tenant.unit_id) }}" 
+   class="btn neon-btn no-print" 
+   style="display:inline-block; margin-bottom:15px; font-size:20px; padding:10px 20px;">
+   ⬅️ <span class="neon-pink">Back</span>
+</a>
+
 
     <button class="btn neon-btn no-print" onclick="window.print()">🖨 Print / Save as PDF</button>
   </div>
