@@ -1,14 +1,25 @@
-<form method="POST">
-  <label>Name:</label>
-  <input type="text" name="name" value="{{ tenant.name }}"><br>
-  <label>Phone:</label>
-  <input type="text" name="phone" value="{{ tenant.phone }}"><br>
-  <label>Email:</label>
-  <input type="text" name="email" value="{{ tenant.email }}"><br>
-  <button type="submit">Save</button>
-</form>
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-pink">💎 Edit Tenant 💎</h2>
+  <form method="POST">
+    <label class="neon-blue">Name:</label>
+    <input type="text" name="name" value="{{ tenant.name }}" class="neon-input"><br>
 
-<form method="POST" action="{{ url_for('delete_tenant', tid=tenant.id) }}">
-  <button type="submit">Delete Tenant</button>
-</form>
+    <label class="neon-purple">Phone:</label>
+    <input type="text" name="phone" value="{{ tenant.phone }}" class="neon-input"><br>
+
+    <label class="neon-green">Email:</label>
+    <input type="text" name="email" value="{{ tenant.email }}" class="neon-input"><br>
+
+    <button type="submit" class="btn neon-cyan">💾 Save Changes</button>
+  </form>
+
+  <form method="POST" action="{{ url_for('delete_tenant', tid=tenant.id) }}">
+    <button class="btn neon-red" type="submit">❌ Delete Tenant</button>
+  </form>
+
+  <a class="btn neon-yellow" href="{{ url_for('unit_detail', uid=tenant.unit_id) }}">⬅ Back to Unit</a>
+</div>
+{% endblock %}
 
