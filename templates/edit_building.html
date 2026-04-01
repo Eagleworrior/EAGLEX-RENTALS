@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-pink">✨ Edit Building ✨</h2>
+  <form method="POST">
+    <label class="neon-blue">Building Name:</label>
+    <input type="text" name="name" value="{{ building.name }}" class="neon-input">
+    <button type="submit" class="btn neon-green">💾 Save Changes</button>
+  </form>
+  <a class="btn neon-cyan" href="{{ url_for('building_detail', bid=building.id) }}">⬅ Back to Building</a>
+</div>
+{% endblock %}
+

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-pink">🌟 Landlord Dashboard 🌟</h2>
+  <a class="btn neon-green" href="{{ url_for('dashboard') }}">⬅ Back to Main Dashboard</a>
+
+  {% for building in buildings %}
+    <div class="receipt-item">
+      <h3 class="neon-blue">🏢 {{ building.name }}</h3>
+      <a class="btn neon-purple" href="{{ url_for('edit_building', bid=building.id) }}">✨ Edit Building</a>
+      <a class="btn neon-cyan" href="{{ url_for('building_detail', bid=building.id) }}">🔍 View Building</a>
+
+      <h4 class="neon-yellow">Units</h4>
+      <ul class="receipt-list">
+      {% for unit in building.units %}
+        <li class="receipt-item">
+          <span class="neon-green">Unit {{ unit.number }}</span>
+          <span class="neon-pink">Rent: {{ unit.rent_amount }}</span>
+          <a class="btn neon-orange" href="{{ url_for('edit_unit', uid=unit.id) }}">🛠 Edit Unit</a>
+          <a class="btn neon-cyan" href="{{ url_for('unit_detail', uid=unit.id) }}">📖 View Unit</a>
+
+          {% if unit.tenant %}
+            <div class="receipt-info">
+              <span class="neon-purple">👤 Tenant: {{ unit.tenant.name }}</span>
+              <span class="neon-yellow">📞 {{ unit.tenant.phone }}</span>
+              <a class="btn neon-green" href="{{ url_for('edit_tenant', tid=unit.tenant.id) }}">💎 Edit Tenant</a>
+              <form method="POST" action="{{ url_for('delete_tenant', tid=unit.tenant.id) }}" style="display:inline;">
+                <button class="btn neon-red" type="submit">❌ Delete Tenant</button>
+              </form>
+            </div>
+          {% else %}
+            <em class="neon-pink">✨ No tenant assigned ✨</em>
+          {% endif %}
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
+

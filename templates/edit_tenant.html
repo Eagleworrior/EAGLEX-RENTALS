@@ -1,0 +1,14 @@
+<form method="POST">
+  <label>Name:</label>
+  <input type="text" name="name" value="{{ tenant.name }}"><br>
+  <label>Phone:</label>
+  <input type="text" name="phone" value="{{ tenant.phone }}"><br>
+  <label>Email:</label>
+  <input type="text" name="email" value="{{ tenant.email }}"><br>
+  <button type="submit">Save</button>
+</form>
+
+<form method="POST" action="{{ url_for('delete_tenant', tid=tenant.id) }}">
+  <button type="submit">Delete Tenant</button>
+</form>
+

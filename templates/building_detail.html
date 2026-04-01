@@ -1,27 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="card">
-  <h2 class="neon-heading-cyan">
-    Building: <span class="neon-yellow">{{ building.name }}</span>
-  </h2>
-  <a class="btn" href="{{ url_for('new_unit', bid=building.id) }}">➕ Add Unit</a>
-  <a class="btn" href="{{ url_for('dashboard') }}">⬅ Back to Dashboard</a>
+  <h2 class="neon-heading-cyan">🏢 {{ building.name }}</h2>
+  <a class="btn neon-purple" href="{{ url_for('edit_building', bid=building.id) }}">🛠 Edit Building</a>
+  <a class="btn neon-green" href="{{ url_for('dashboard') }}">⬅ Back to Dashboard</a>
 
-  {% if building.units %}
-    <ul class="receipt-list">
-      {% for u in building.units %}
-        <li class="receipt-item">
-          <div class="receipt-info">
-            <span class="receipt-name neon-green">House {{ u.number }}</span>
-            <span class="neon-aqua">Rent: {{ u.rent_amount }}</span>
-          </div>
-          <a class="btn" href="{{ url_for('unit_detail', uid=u.id) }}">Open</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="neon-pink">No units yet. Add your first unit.</p>
-  {% endif %}
+  <h3 class="neon-yellow">Units</h3>
+  <ul class="receipt-list">
+    {% for unit in building.units %}
+      <li class="receipt-item">
+        <span class="neon-blue">Unit {{ unit.number }}</span>
+        <span class="neon-pink">Rent: {{ unit.rent_amount }}</span>
+        <a class="btn neon-orange" href="{{ url_for('edit_unit', uid=unit.id) }}">🛠 Edit Unit</a>
+        <a class="btn neon-cyan" href="{{ url_for('unit_detail', uid=unit.id) }}">📖 View Unit</a>
+      </li>
+    {% endfor %}
+  </ul>
 </div>
 {% endblock %}
 

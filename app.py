@@ -286,6 +286,70 @@ def tenant_portal(tid):
                            landlord=None,
                            date=date_value)
 
+# ---------- LANDLORD EDIT/DELETE ----------
+
+@app.route('/building/<int:bid>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_building(bid):
+    building = Building.query.filter_by(id=bid, landlord_id=current_user.id).first_or_404()
+    if request.method == 'POST':
+        building.name = request.form['name'].strip()
+        db.session.commit()
+        flash("Building updated successfully", "success")
+        return redirect(url_for('building_detail', bid=bid))
+    return render_template('edit_building.html', building=building)
+
+@app.route('/unit/<int:uid>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_unit(uid):
+    unit = Unit.query.join(Building).filter(
+        Unit.id == uid,
+        Building.landlord_id == current_user.id
+    ).first_or_404()
+    if request.method == 'POST':
+        unit.number = request.form['number'].strip()
+        unit.rent_amount = float(request.form.get('rent_amount') or 0)
+        db.session.commit()
+        flash("Unit updated successfully", "success")
+        return redirect(url_for('unit_detail', uid=uid))
+    return render_template('edit_unit.html', unit=unit)
+
+@app.route('/tenant/<int:tid>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_tenant(tid):
+    tenant = Tenant.query.join(Unit).join(Building).filter(
+        Tenant.id == tid,
+        Building.landlord_id == current_user.id
+    ).first_or_404()
+    if request.method == 'POST':
+        tenant.name = request.form['name'].strip()
+        tenant.phone = request.form.get('phone')
+        tenant.email = request.form.get('email')
+        db.session.commit()
+        flash("Tenant updated successfully", "success")
+        return redirect(url_for('unit_detail', uid=tenant.unit_id))
+    return render_template('edit_tenant.html', tenant=tenant)
+
+@app.route('/tenant/<int:tid>/delete', methods=['POST'])
+@login_required
+def delete_tenant(tid):
+    tenant = Tenant.query.join(Unit).join(Building).filter(
+        Tenant.id == tid,
+        Building.landlord_id == current_user.id
+    ).first_or_404()
+    db.session.delete(tenant)
+    db.session.commit()
+    flash("Tenant removed successfully", "success")
+    return redirect(url_for('unit_detail', uid=tenant.unit_id))
+
+@app.route('/landlord/dashboard')
+@login_required
+def landlord_dashboard():
+    buildings = Building.query.filter_by(landlord_id=current_user.id).all()
+    return render_template('landlord_dashboard.html', buildings=buildings)
+
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
 

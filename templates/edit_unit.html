@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2 class="neon-heading-green">✨ Edit Unit ✨</h2>
+  <form method="POST">
+    <label class="neon-blue">Unit Number:</label>
+    <input type="text" name="number" value="{{ unit.number }}" class="neon-input"><br>
+    <label class="neon-purple">Rent Amount:</label>
+    <input type="text" name="rent_amount" value="{{ unit.rent_amount }}" class="neon-input"><br>
+    <button type="submit" class="btn neon-pink">💾 Save Changes</button>
+  </form>
+  <a class="btn neon-cyan" href="{{ url_for('unit_detail', uid=unit.id) }}">⬅ Back to Unit</a>
+</div>
+{% endblock %}
+
