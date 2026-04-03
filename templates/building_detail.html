@@ -1,21 +1,84 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card">
-  <h2 class="neon-heading-cyan">🏢 {{ building.name }}</h2>
-  <a class="btn neon-purple" href="{{ url_for('edit_building', bid=building.id) }}">🛠 Edit Building</a>
-  <a class="btn neon-green" href="{{ url_for('dashboard') }}">⬅ Back to Dashboard</a>
+<div style="padding: 25px; max-width: 900px; margin: auto;">
 
-  <h3 class="neon-yellow">Units</h3>
-  <ul class="receipt-list">
+    <!-- Building Title -->
+    <h1 style="font-size: 28px; font-weight: 900; color: #00eaff; text-shadow: 0 0 12px #00eaff;">
+        🏢 {{ building.name }}
+    </h1>
+
+    <!-- Building Actions -->
+    <div style="margin-top: 20px; margin-bottom: 25px;">
+        <a href="{{ url_for('edit_building', bid=building.id) }}"
+           style="padding: 10px 18px; background: linear-gradient(90deg, #ff00ff, #9900ff);
+                  color: white; border-radius: 8px; text-decoration: none; font-weight: 800;
+                  box-shadow: 0 0 10px #ff00ff;">
+            ✏️ Edit Building
+        </a>
+        <a href="{{ url_for('new_unit', bid=building.id) }}"
+           style="padding: 10px 18px; background: linear-gradient(90deg, #00ff88, #00cc66);
+                  color: black; border-radius: 8px; text-decoration: none; font-weight: 800;
+                  margin-left: 10px; box-shadow: 0 0 10px #00ff88;">
+            ➕ Add Unit
+        </a>
+    </div>
+
+    <!-- Units Header -->
+    <h2 style="font-size: 22px; color: #ffdd00; text-shadow: 0 0 10px #ffdd00;">
+        🏘️ Units in This Building
+    </h2>
+
     {% for unit in building.units %}
-      <li class="receipt-item">
-        <span class="neon-blue">Unit {{ unit.number }}</span>
-        <span class="neon-pink">Rent: {{ unit.rent_amount }}</span>
-        <a class="btn neon-orange" href="{{ url_for('edit_unit', uid=unit.id) }}">🛠 Edit Unit</a>
-        <a class="btn neon-cyan" href="{{ url_for('unit_detail', uid=unit.id) }}">📖 View Unit</a>
-      </li>
+        <div style="background: rgba(0,0,0,0.35); padding: 15px; border-radius: 10px;
+                    margin-bottom: 15px; box-shadow: 0 0 10px #00eaff;">
+            <h3 style="font-size: 20px; color: #00eaff;">🏠 Unit {{ unit.number }}</h3>
+            <p style="font-size: 16px; color: #ffdd00;">💵 Rent: {{ unit.rent_amount }}</p>
+
+            {% if unit.tenant %}
+                <p style="font-size: 16px; color: #00ff88;">👤 Tenant: <strong>{{ unit.tenant.name }}</strong></p>
+                <p style="font-size: 15px; margin: 5px 0;">
+                    <span style="color:#00eaff;">📞 {{ unit.tenant.phone }}</span><br>
+                    <span style="color:#ffdd00;">🪪 {{ unit.tenant.id_number }}</span><br>
+                    <span style="color:#ff00ff;">✉ {{ unit.tenant.email }}</span>
+                </p>
+
+                <!-- Payment Input -->
+                <form action="{{ url_for('record_payment', tid=unit.tenant.id) }}" method="POST" style="margin-top: 12px;">
+
+                    <label style="color:#00ff88; font-weight:800;">💰 Amount Paid</label>
+                    <input type="number" name="amount" required
+                           style="width:100%; padding:10px; border-radius:8px; margin-bottom:10px;
+                                  background:rgba(0,0,0,0.6); color:#ffdd00; font-weight:700;">
+
+                    <label style="color:#ff00ff; font-weight:800;">📅 Payment Date</label>
+                    <input type="date" name="date" required
+                           style="width:100%; padding:10px; border-radius:8px; margin-bottom:10px;
+                                  background:rgba(0,0,0,0.6); color:#00eaff; font-weight:700;">
+
+                    <label style="color:#ffaa00; font-weight:800;">📝 Notes (optional)</label>
+                    <input type="text" name="notes"
+                           style="width:100%; padding:10px; border-radius:8px; margin-bottom:10px;
+                                  background:rgba(0,0,0,0.6); color:#00ff88; font-weight:700;">
+
+                    <button type="submit"
+                            style="padding:12px 20px; background:linear-gradient(90deg,#00ff88,#00cc66);
+                                   color:black; font-weight:900; border-radius:10px; box-shadow:0 0 12px #00ff88;">
+                        💵 Record Payment & Generate Receipt
+                    </button>
+                </form>
+
+            {% else %}
+                <p style="font-size: 16px; color: #ff4444;">No tenant assigned</p>
+                <a href="{{ url_for('new_tenant', uid=unit.id) }}"
+                   style="padding: 10px 18px; background: linear-gradient(90deg, #00ff88, #00cc66);
+                          color: black; border-radius: 8px; text-decoration: none; font-weight: 800;
+                          box-shadow: 0 0 10px #00ff88;">
+                    ➕ Add Tenant
+                </a>
+            {% endif %}
+        </div>
     {% endfor %}
-  </ul>
+
 </div>
 {% endblock %}
 

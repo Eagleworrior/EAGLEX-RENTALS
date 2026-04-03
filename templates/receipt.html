@@ -37,7 +37,6 @@
     </p>
 
     <hr>
-
     <!-- Tenant + Unit -->
     <p class="receipt-text line2"><span class="label">Building:</span> {{ tenant.unit.building.name }}</p>
     <p class="receipt-text line3"><span class="label">House:</span> {{ tenant.unit.number }}</p>
@@ -62,7 +61,7 @@
     <!-- Exact date + time -->
     <p class="receipt-text line11" style="text-align:center;">
       <span class="label">Created On:</span>
-      {{ date.strftime('%A, %d %B %Y — %I:%M:%S %p') }}
+      {{ generated_at.strftime('%A, %d %B %Y — %I:%M:%S %p EAT') }}
     </p>
 
     {% if tenant.paid %}
@@ -75,7 +74,7 @@
 
     <!-- Signature -->
     <div class="signature-area" style="text-align:center;">
-      <p class="signature-label">Authorized Signature</p>
+      <p class="signature-label">Authorized Signature</p>     
       <div class="signature-line"></div>
       <p class="neon-aqua">{% if landlord %}{{ landlord.full_name }}{% else %}__________________{% endif %}</p>
     </div>
@@ -85,15 +84,15 @@
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={{ request.url }}" alt="QR Code">
       <p class="neon-green">Scan to verify receipt</p>
     </div>
-<!-- Back Button -->
-<a href="{{ url_for('unit_detail', uid=tenant.unit_id) }}" 
-   class="btn neon-btn no-print" 
-   style="display:inline-block; margin-bottom:15px; font-size:20px; padding:10px 20px;">
-   ⬅️ <span class="neon-pink">Back</span>
-</a>
 
+    <!-- Back Button -->
+    <a href="{{ url_for('unit_detail', uid=tenant.unit_id) }}"
+       class="btn neon-btn no-print"
+       style="display:inline-block; margin-bottom:15px; font-size:20px; padding:10px 20px;">
+       ⬅️ <span class="neon-pink">Back</span>
+    </a>
 
-    <button class="btn neon-btn no-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+    <button class="btn neon-btn no-print" onclick="window.print()">🖨 Print / Save as PDF </button>
   </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
+from zoneinfo import ZoneInfo
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'change-this-secret'
@@ -58,19 +59,29 @@ class Tenant(db.Model):
     unit_id = db.Column(db.Integer, db.ForeignKey('unit.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # NEW: Total rent due
     @property
-    def rent_amount(self):
-        return self.unit.rent_amount if self.unit and self.unit.rent_amount else 0.0
+    def total_due(self):
+        return self.unit.rent_amount if self.unit else 0.0
 
+    # NEW: Balance remaining
     @property
     def balance(self):
-        return self.rent_amount - (self.amount_paid or 0.0)
+        return max(self.total_due - self.amount_paid, 0.0)
+
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tenant_id = db.Column(db.Integer, db.ForeignKey('tenant.id'), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    notes = db.Column(db.String(250))
+    tenant = db.relationship('Tenant', backref=db.backref('payments', lazy=True))
+
+# ---------- AUTH ----------
 
 @login_manager.user_loader
 def load_user(user_id):
     return Landlord.query.get(int(user_id))
-
-# ---------- AUTH ----------
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -210,12 +221,16 @@ def record_payment(tid):
         Tenant.id == tid,
         Building.landlord_id == current_user.id
     ).first_or_404()
+
     amount = float(request.form.get('amount') or 0)
     tenant.amount_paid += amount
-    if tenant.amount_paid >= tenant.rent_amount:
+
+    # FIXED: use unit.rent_amount
+    if tenant.amount_paid >= tenant.unit.rent_amount:
         tenant.paid = True
         if not tenant.receipt_created_at:
             tenant.receipt_created_at = datetime.now()
+
     db.session.commit()
     flash(f"Payment of {amount} recorded for {tenant.name}", "success")
     return redirect(url_for('unit_detail', uid=tenant.unit_id))
@@ -223,17 +238,21 @@ def record_payment(tid):
 # ---------- RECEIPT (SINGLE) ----------
 
 @app.route('/tenant/<int:tid>/receipt')
-@login_required
 def receipt(tid):
-    tenant = Tenant.query.join(Unit).join(Building).filter(
-        Tenant.id == tid,
-        Building.landlord_id == current_user.id
-    ).first_or_404()
-    date_value = tenant.receipt_created_at or tenant.created_at
-    return render_template('receipt.html',
-                           tenant=tenant,
-                           landlord=current_user,
-                           date=date_value)
+    tenant = Tenant.query.get_or_404(tid)
+    payment = Payment.query.filter_by(tenant_id=tid).order_by(Payment.id.desc()).first()
+    generated_at = datetime.now(ZoneInfo("Africa/Nairobi"))
+
+    # Receipt layout improvements (logic only)
+    return render_template(
+        'receipt.html',
+        tenant=tenant,
+        payment=payment,
+        landlord=tenant.unit.building.landlord if tenant.unit and tenant.unit.building else None,
+        generated_at=generated_at,
+        total_due=tenant.total_due,
+        balance=tenant.balance
+    )
 
 # ---------- RECEIPTS DASHBOARD ----------
 
@@ -249,7 +268,6 @@ def receipts():
     for t in tenants:
         d = (t.receipt_created_at or t.created_at).date()
         grouped.setdefault(d, []).append(t)
-
     sorted_dates = sorted(grouped.keys(), reverse=True)
     return render_template('receipts.html',
                            grouped=grouped,
@@ -347,8 +365,6 @@ def delete_tenant(tid):
 def landlord_dashboard():
     buildings = Building.query.filter_by(landlord_id=current_user.id).all()
     return render_template('landlord_dashboard.html', buildings=buildings)
-
-
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

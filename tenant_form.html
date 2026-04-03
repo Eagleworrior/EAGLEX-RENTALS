@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="padding: 25px;">
+
+    <h1 style="
+        font-size: 40px;
+        font-weight: 900;
+        color: #00eaff;
+        text-shadow: 0 0 12px #00eaff;">
+        🧍 Add Tenant to {{ unit.name }}
+    </h1>
+
+    <form method="POST" style="margin-top: 25px;">
+
+        <label style="color: #00eaff; font-weight: 700;">Full Name</label>
+        <input type="text" name="full_name" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <label style="color: #00eaff; font-weight: 700;">Email</label>
+        <input type="email" name="email" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <label style="color: #00eaff; font-weight: 700;">National ID</label>
+        <input type="text" name="national_id" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <label style="color: #00eaff; font-weight: 700;">Phone Number</label>
+        <input type="text" name="phone" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <label style="color: #00eaff; font-weight: 700;">Start Date</label>
+        <input type="date" name="start_date" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <label style="color: #00eaff; font-weight: 700;">Deposit Amount</label>
+        <input type="number" name="deposit" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <label style="color: #00eaff; font-weight: 700;">Monthly Rent</label>
+        <input type="number" name="rent" required
+               style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;">
+
+        <button type="submit"
+                style="padding: 12px 20px;
+                       background: linear-gradient(90deg, #00ff88, #00cc66);
+                       color: black;
+                       font-weight: 900;
+                       border-radius: 10px;
+                       box-shadow: 0 0 12px #00ff88;">
+            ➕ ADD TENANT
+        </button>
+
+    </form>
+
+    <a href="{{ url_for('unit_detail', uid=unit.id) }}"
+       style="display: inline-block;
+              margin-top: 25px;
+              padding: 12px 20px;
+              background: linear-gradient(90deg, #ffaa00, #ff5500);
+              color: black;
+              font-weight: 900;
+              border-radius: 10px;
+              text-decoration: none;">
+        ⬅ BACK TO UNIT
+    </a>
+
+</div>
+{% endblock %}
+

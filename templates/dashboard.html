@@ -1,27 +1,39 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card">
-  <h2 class="neon-heading-cyan">Your Buildings</h2>
-  <a class="btn" href="{{ url_for('new_building') }}">➕ Add Building</a>
+<div style="padding: 25px; max-width: 1000px; margin: auto;">
 
-  <!-- 🔹 New link to landlord dashboard -->
-  <a class="btn" href="{{ url_for('landlord_dashboard') }}">🏠 Landlord Dashboard</a>
+    <h1 style="font-size: 30px; font-weight: 900; color: #00eaff; text-shadow: 0 0 12px #00eaff;">
+        🏠 Landlord Dashboard
+    </h1>
 
-  {% if buildings %}
-    <ul class="receipt-list">
-      {% for b in buildings %}
-        <li class="receipt-item">
-          <div class="receipt-info">
-            <span class="receipt-name neon-blue">{{ b.name }}</span>
-            <span class="neon-purple">Units: {{ b.units|length }}</span>
-          </div>
-          <a class="btn" href="{{ url_for('building_detail', bid=b.id) }}">Open</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="neon-yellow">No buildings yet. Add your first building.</p>
-  {% endif %}
+    <!-- Add Building Button -->
+    <div style="margin-top: 20px; margin-bottom: 25px;">
+        <a href="{{ url_for('new_building') }}"
+           style="padding: 12px 20px; background: linear-gradient(90deg, #00ff88, #00cc66);
+                  color: black; border-radius: 10px; text-decoration: none; font-weight: 900;
+                  box-shadow: 0 0 12px #00ff88;">
+            ➕ Add Building
+        </a>
+    </div>
+
+    <h2 style="font-size: 22px; color: #ffdd00; text-shadow: 0 0 10px #ffdd00;">
+        🏢 Your Buildings
+    </h2>
+
+    {% for building in buildings %}
+        <div style="background: rgba(0,0,0,0.35); padding: 18px; border-radius: 12px;
+                    margin-top: 15px; box-shadow: 0 0 12px #00eaff;">
+            <h3 style="font-size: 20px; color: #00eaff; margin: 0;">🏢 {{ building.name }}</h3>
+            <p style="font-size: 16px; color: #ffdd00;">Units: {{ building.units|length }}</p>
+            <a href="{{ url_for('building_detail', bid=building.id) }}"
+               style="padding: 10px 18px; background: linear-gradient(90deg, #ffaa00, #ff5500);
+                      color: black; border-radius: 8px; text-decoration: none; font-weight: 800;
+                      box-shadow: 0 0 10px #ffaa00;">
+                📄 View Building
+            </a>
+        </div>
+    {% endfor %}
+
 </div>
 {% endblock %}
 

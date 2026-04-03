@@ -1,26 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card">
-  <h2 class="neon-heading-pink">
-    New Tenant for <span class="neon-yellow">{{ unit.building.name }}</span> —
-    <span class="neon-green">House {{ unit.number }}</span>
-  </h2>
-  <form method="post" class="form-vertical">
-    <label class="neon-blue">Tenant Name
-      <input name="name" required>
-    </label>
-    <label class="neon-purple">Phone
-      <input name="phone">
-    </label>
-    <label class="neon-green">ID Number
-      <input name="id_number">
-    </label>
-    <label class="neon-aqua">Email
-      <input type="email" name="email">
-    </label>
-    <button class="btn">Save Tenant</button>
-  </form>
-  <a class="btn" href="{{ url_for('unit_detail', uid=unit.id) }}">⬅ Back</a>
+<div style="padding: 25px; max-width: 650px; margin: auto;">
+
+    <h1 style="font-size: 28px; font-weight: 900; color: #00eaff; text-shadow: 0 0 12px #00eaff;">
+        ➕ Add Tenant to Unit {{ unit.number }}
+    </h1>
+
+    <form method="POST" style="margin-top: 20px;">
+
+        <label style="color:#00eaff; font-weight:800;">Full Name</label>
+        <input type="text" name="name" required
+               style="width:100%; padding:10px; border-radius:8px; margin-bottom:12px;
+                      background:rgba(0,0,0,0.6); color:#00ff88; font-weight:700;">
+
+        <label style="color:#ff00ff; font-weight:800;">Email</label>
+        <input type="email" name="email" required
+               style="width:100%; padding:10px; border-radius:8px; margin-bottom:12px;
+                      background:rgba(0,0,0,0.6); color:#ffaa00; font-weight:700;">
+
+        <label style="color:#ffdd00; font-weight:800;">Phone</label>
+        <input type="text" name="phone" required
+               style="width:100%; padding:10px; border-radius:8px; margin-bottom:12px;
+                      background:rgba(0,0,0,0.6); color:#00eaff; font-weight:700;">
+
+        <label style="color:#00ff88; font-weight:800;">National ID</label>
+        <input type="text" name="id_number" required
+               style="width:100%; padding:10px; border-radius:8px; margin-bottom:12px;
+                      background:rgba(0,0,0,0.6); color:#ff00ff; font-weight:700;">
+
+        <button type="submit"
+                style="padding:12px 20px; background:linear-gradient(90deg,#00ff88,#00cc66);
+                       color:black; font-weight:900; border-radius:10px; box-shadow:0 0 12px #00ff88;">
+            ➕ Add Tenant
+        </button>
+
+    </form>
+
 </div>
 {% endblock %}
 
