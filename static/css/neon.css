@@ -36,8 +36,7 @@ header {
 
 .logo-text {
   font-size: 26px;
-  font-weight: 900;
-}
+  font-weight: 900;}
 
 /* Neon text helpers */
 .neon-blue { color: var(--neon-blue); text-shadow: 0 0 6px var(--neon-blue); }
@@ -75,8 +74,7 @@ h1, h2, h3, h4 {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 2px;
-  box-shadow: 0 0 10px var(--neon-aqua);
+  margin: 4px 2px;  box-shadow: 0 0 10px var(--neon-aqua);
   transition: 0.2s;
 }
 
@@ -152,8 +150,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
 }
 
-.flash-success { background: #003322; color: var(--neon-green); }
-.flash-error { background: #330011; color: var(--neon-red); }
+.flash-success { background: #003322; color: var(--neon-green); }.flash-error { background: #330011; color: var(--neon-red); }
 
 /* Receipt */
 .receipt-border {
@@ -191,8 +188,7 @@ h1, h2, h3, h4 {
 .receipt-text.line4 { color: var(--neon-yellow); }
 .receipt-text.line5 { color: var(--neon-violet); }
 .receipt-text.line6 { color: var(--neon-aqua); }
-.receipt-text.line7 { color: var(--neon-red); }
-.receipt-text.line8 { color: var(--neon-green); }
+.receipt-text.line7 { color: var(--neon-red); }.receipt-text.line8 { color: var(--neon-green); }
 .receipt-text.line9 { color: var(--neon-pink); }
 .receipt-text.line10 { color: var(--neon-blue); }
 .receipt-text.line11 { color: var(--neon-purple); }
@@ -230,8 +226,7 @@ h1, h2, h3, h4 {
 }
 
 .receipt-status.due {
-  color: var(--neon-red);
-  text-shadow: 0 0 10px var(--neon-red);
+  color: var(--neon-red);  text-shadow: 0 0 10px var(--neon-red);
 }
 
 .stamp {
@@ -250,6 +245,50 @@ h1, h2, h3, h4 {
   body.theme-dark {
     background: #ffffff;
     color: #000000;
+  }
+}
+
+/* --- Responsive additions --- */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 992px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .header-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 20px;
+  }
+  .header-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn {
+    width: 90%;
+    margin: 6px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 16px;
+  }
+  .btn {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+  .container {
+    padding: 6px;
   }
 }
 
