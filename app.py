@@ -365,6 +365,11 @@ def delete_tenant(tid):
 def landlord_dashboard():
     buildings = Building.query.filter_by(landlord_id=current_user.id).all()
     return render_template('landlord_dashboard.html', buildings=buildings)
+@app.after_request
+def add_headers(response):
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Content-Security-Policy'] = "frame-ancestors 'none';"
+    return response
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
