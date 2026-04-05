@@ -369,6 +369,7 @@ def landlord_dashboard():
 def add_headers(response):
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['Content-Security-Policy'] = "frame-ancestors 'none';"
+    response.headers['Strict-Transport-Security'] = "max-age=31536000; includeSubDomains"
     return response
 
 if __name__ == "__main__":
